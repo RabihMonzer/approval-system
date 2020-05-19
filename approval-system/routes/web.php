@@ -20,3 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/materials', 'MaterialController@index')->name('materials.index');
+Route::get('/materials/create', 'MaterialController@create')->name('materials.create');
+Route::get('/materials/{material}', 'MaterialController@show')->name('materials.show');
+Route::get('/materials/{material}/edit', 'MaterialController@edit')->name('materials.edit');
+Route::post('/materials', 'MaterialController@store')->name('materials.store');
+Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
+Route::delete('/materials/{material}', 'MaterialController@destory')->name('materials.destroy');
