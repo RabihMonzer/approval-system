@@ -41,4 +41,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class);
+    }
+
+    public function rejectedMaterialLogs()
+    {
+        return $this->hasMany(RejectedMaterialLog::class);
+    }
 }
