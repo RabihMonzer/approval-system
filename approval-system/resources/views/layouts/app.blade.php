@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Approval System</title>
+    <title>{{ config('app.name', 'Approval System') }}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -24,7 +24,7 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-        <div class="sidebar-heading">Approval System</div>
+        <div class="sidebar-heading">{{ config('app.name', 'Approval System') }}</div>
         <div class="list-group list-group-flush">
             <a href="{{ route('materials.index')  }}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
