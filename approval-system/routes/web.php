@@ -20,6 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Routes for Materials
 Route::get('/materials', 'MaterialController@index')->name('materials.index');
 Route::get('/materials/create', 'MaterialController@create')->name('materials.create');
 Route::get('/materials/{material}', 'MaterialController@show')->name('materials.show');
@@ -27,3 +29,12 @@ Route::get('/materials/{material}/edit', 'MaterialController@edit')->name('mater
 Route::post('/materials', 'MaterialController@store')->name('materials.store');
 Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
 Route::delete('/materials/{material}', 'MaterialController@destory')->name('materials.destroy');
+
+// Routes For Material Types
+Route::get('/material-types', 'MaterialTypeController@index')->name('material-types.index');
+Route::get('/material-types/create', 'MaterialTypeController@create')->name('material-types.create');
+Route::get('/material-types/{materialType}', 'MaterialTypeController@show')->name('material-types.show');
+Route::get('/material-types/{materialType}/edit', 'MaterialTypeController@edit')->name('material-types.edit');
+Route::post('/material-types', 'MaterialTypeController@store')->name('material-types.store');
+Route::put('/material-types/{materialType}', 'MaterialTypeController@update')->name('material-types.update');
+Route::delete('/material-types/{materialType}', 'MaterialTypeController@destory')->name('material-types.destroy');

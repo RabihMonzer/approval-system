@@ -12,4 +12,9 @@ class RejectedMaterialLog extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function materialType()
+    {
+        return $this->belongsTo(MaterialType::class);
+    }
 }

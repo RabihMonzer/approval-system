@@ -20,6 +20,7 @@ class CreateMaterialsTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->string('title')->nullable(false);
             $table->string('content')->nullable(false);
+            $table->bigInteger('type_id')->unsigned();
             $table->string('status')->nullable(false)->default(self::DEFAULT_MATERIAL_STATUS);
             $table->timestamps();
         });
