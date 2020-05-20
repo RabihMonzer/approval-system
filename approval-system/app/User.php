@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Dictionaries\RoleDictionary;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -18,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role_id'
     ];
 
     /**
@@ -52,5 +54,14 @@ class User extends Authenticatable
     public function rejectedMaterialLogs()
     {
         return $this->hasMany(RejectedMaterialLog::class);
+    }
+
+    public function getMaterials()
+    {
+        if (RoleDictionary::ROLE_MANAGER === $this->role->name) {
+            return Material::all();
+        }
+
+        return $this->materials();
     }
 }

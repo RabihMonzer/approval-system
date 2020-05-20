@@ -5,18 +5,26 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Material;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\View\View;
 
 class MaterialController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index()
     {
-        dd('index');
+        $user = auth()->user();
+
+        if (!$user instanceof User) {
+            return redirect('login');
+        }
+
+        return view('materials.index', ['materials' => $user->getMaterials()]);
     }
 
     /**
@@ -32,7 +40,7 @@ class MaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -43,7 +51,7 @@ class MaterialController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Material  $material
+     * @param \App\Material $material
      * @return \Illuminate\Http\Response
      */
     public function show(Material $material)
@@ -54,7 +62,7 @@ class MaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Material  $material
+     * @param \App\Material $material
      * @return \Illuminate\Http\Response
      */
     public function edit(Material $material)
@@ -65,8 +73,8 @@ class MaterialController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Material  $material
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Material $material
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Material $material)
@@ -77,7 +85,7 @@ class MaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Material  $material
+     * @param \App\Material $material
      * @return \Illuminate\Http\Response
      */
     public function destroy(Material $material)
