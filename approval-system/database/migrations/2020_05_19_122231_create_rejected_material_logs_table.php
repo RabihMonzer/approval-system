@@ -19,6 +19,7 @@ class CreateRejectedMaterialLogsTable extends Migration
             $table->bigInteger('type_id')->unsigned();
             $table->string('title')->nullable(false);
             $table->string('content')->nullable(false);
+            $table->bigInteger('created_by')->nullable(false)->unsigned();
             $table->timestamps();
         });
 

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Dictionaries\MaterialStatusDictionary;
+use App\Dictionaries\UserMessagesDictionary;
 use App\Material;
+use App\RejectedMaterialLog;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
@@ -13,16 +16,17 @@ use Illuminate\View\View;
 
 class MaterialController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * @return Application|Factory|View
      */
     public function index()
     {
         $user = auth()->user();
-
-        if (!$user instanceof User) {
-            return redirect('login');
-        }
 
         return view('materials.index', ['materials' => $user->getMaterials()]);
     }
@@ -48,48 +52,44 @@ class MaterialController extends Controller
         dd('store');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Material $material
-     * @return \Illuminate\Http\Response
-     */
     public function show(Material $material)
     {
-        dd('show');
+        return view('materials.show', compact('material'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Material $material
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Material $material)
     {
-        dd('edit');
+        return \view('materials.edit', compact($material));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Material $material
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Material $material)
     {
-        dd('update');
+        dd('update123');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Material $material
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Material $material)
     {
-        dd('destroy');
+        $rejectedMaterialLog = RejectedMaterialLog::createRejectedMaterialLog($material);
+        $rejectedMaterialLog->save();
+
+        $material->delete();
+
+        return redirect()->route('materials.index')->with('message', UserMessagesDictionary::MATERIAL_DELETED);
+    }
+
+    public function approve(Request $request, Material $material)
+    {
+        $material->approve();
+
+        return redirect()->route('materials.show', $material->id);
+    }
+
+    public function decline(Request $request, Material $material)
+    {
+        RejectedMaterialLog::createRejectedMaterialLog($material);
+
+        $material->delete();
+
+        return redirect()->route('materials.index');
     }
 }

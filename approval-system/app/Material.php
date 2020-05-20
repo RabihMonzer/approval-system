@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Dictionaries\MaterialStatusDictionary;
 use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
@@ -13,8 +14,14 @@ class Material extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function materialType()
+    public function type()
     {
         return $this->belongsTo(MaterialType::class, 'type_id');
+    }
+
+    public function approve(): void
+    {
+        $this->status = MaterialStatusDictionary::APPROVED;
+        $this->save();
     }
 }

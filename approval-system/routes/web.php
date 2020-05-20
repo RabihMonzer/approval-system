@@ -27,8 +27,10 @@ Route::get('/materials/create', 'MaterialController@create')->name('materials.cr
 Route::get('/materials/{material}', 'MaterialController@show')->name('materials.show');
 Route::get('/materials/{material}/edit', 'MaterialController@edit')->name('materials.edit');
 Route::post('/materials', 'MaterialController@store')->name('materials.store');
+Route::put('/materials/approve/{material}', 'MaterialController@approve')->name('material.approve');
+Route::put('/materials/decline/{material}', 'MaterialController@decline')->name('material.decline');
 Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
-Route::delete('/materials/{material}', 'MaterialController@destory')->name('materials.destroy');
+Route::delete('/materials/{material}', 'MaterialController@destroy')->name('materials.destroy');
 
 // Routes For Material Types
 Route::get('/material-types', 'MaterialTypeController@index')->name('material-types.index');
@@ -37,4 +39,4 @@ Route::get('/material-types/{materialType}', 'MaterialTypeController@show')->nam
 Route::get('/material-types/{materialType}/edit', 'MaterialTypeController@edit')->name('material-types.edit');
 Route::post('/material-types', 'MaterialTypeController@store')->name('material-types.store');
 Route::put('/material-types/{materialType}', 'MaterialTypeController@update')->name('material-types.update');
-Route::delete('/material-types/{materialType}', 'MaterialTypeController@destory')->name('material-types.destroy');
+Route::delete('/material-types/{materialType}', 'MaterialTypeController@destroy')->name('material-types.destroy');

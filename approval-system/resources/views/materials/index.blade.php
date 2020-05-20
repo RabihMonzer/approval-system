@@ -25,7 +25,7 @@
                     <td>{{ $material->title }}</td>
                     <td>{{ $material->content }}</td>
                     <td>
-                        <a href="{{ route('material-types.show', $material->materialType->id) }}">{{ $material->materialType->type }}</a>
+                        <a href="{{ route('material-types.show', $material->type->id) }}">{{ $material->type->type }}</a>
                     </td>
                     <td>{{ $material->status }}</td>
                     <td>{{ $material->user->name }}</td>
