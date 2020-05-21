@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Dictionaries\MaterialStatusDictionary;
 use App\Dictionaries\UserMessagesDictionary;
 use App\Material;
+use App\MaterialType;
 use App\RejectedMaterialLog;
 use App\User;
 use Illuminate\Http\Request;
@@ -31,35 +32,39 @@ class MaterialController extends Controller
         return view('materials.index', ['materials' => $user->getMaterials()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        dd('create');
+        $availableMaterialTypes = MaterialType::all();
+        return view('materials.create', compact('availableMaterialTypes'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        dd('store');
+        $this->validate($request, [
+            'title' => ['required', 'max:255'],
+            'content' => ['required'],
+            'materialType' => ['required', 'max:255']
+        ]);
+
+        $materialType = MaterialType::getMaterialType($request->materialType);
+
+        if (!$materialType instanceof MaterialType) {
+            $materialType = MaterialType::createMaterialType($request->materialType);
+        }
+
+        Material::createNewMaterialByRequest($request, $materialType);
+
+        return redirect()->route('materials.create');
     }
 
     public function show(Material $material)
     {
-        return view('materials.show', compact('material'));
+        return view('materials.show', ['material' => $material, 'availableMaterialTypes' => MaterialType::all()]);
     }
 
     public function edit(Material $material)
     {
-        return \view('materials.edit', compact($material));
+        return view('materials.edit', compact($material));
     }
 
     public function update(Request $request, Material $material)

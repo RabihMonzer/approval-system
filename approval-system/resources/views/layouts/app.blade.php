@@ -31,7 +31,7 @@
         <div class="list-group list-group-flush">
             <a href="{{ route('materials.index')  }}"
                class="list-group-item list-group-item-action bg-light">Dashboard</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+            <a href="{{  route('materials.create') }}" class="list-group-item list-group-item-action bg-light">Create Material</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
