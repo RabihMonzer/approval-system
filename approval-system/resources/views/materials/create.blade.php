@@ -4,8 +4,8 @@
     <h2 class="font-weight-bold">Create New Material</h2>
     <hr>
     @if(empty($availableMaterialTypes))
-        <h2>There are no material types, please go to <a href="{{ route('material-types.create') }}" class="href">this
-                link</a> and create a material type before</h2>
+        <h4>There are no material types, please go to <a href="{{ route('material-types.create') }}" class="href">this
+                link</a> and create a material type before</h4>
     @else
 
         <div class="w-75 text-left p-4">

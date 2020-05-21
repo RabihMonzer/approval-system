@@ -9,13 +9,15 @@
             <p class="card-text"><strong>Status:</strong> {{ $material->status }}</p>
             <p class="card-text"><strong>Created By:</strong> {{ $material->user->name }}</p>
 
-            <a href="#" style="font-size:50px"><i class="fa fa-pencil-square-o p-4"></i></a>
-
+            <div class="d-inline align-bottom">
+                <a href="{{ route('materials.edit', $material->id) }}" style="font-size:55px"><i
+                        class="fa fa-pencil-square-o p-4"></i></a>
+            </div>
             <form action="{{route('materials.destroy', $material->id)}}" method="post" style="display: inline;">
                 @csrf
                 @method('delete')
                 <button type="submit" class="btn text-danger" style="display: inline;">
-                <a style="font-size: 50px"><i class="fa fa-trash p-4" ></i></a>
+                    <a style="font-size: 50px"><i class="fa fa-trash p-4"></i></a>
                 </button>
             </form>
 
@@ -23,7 +25,7 @@
                 @csrf
                 @method('put')
                 <button type="submit" class="btn text-success" style="display: inline;">
-                <a style="font-size: 50px;"><i class="fa fa-check p-4"></i></a>
+                    <a style="font-size: 50px;"><i class="fa fa-check p-4"></i></a>
                 </button>
             </form>
 

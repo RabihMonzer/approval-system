@@ -21,6 +21,7 @@ class CreateMaterialsTable extends Migration
             $table->string('title')->nullable(false);
             $table->string('content')->nullable(false);
             $table->bigInteger('type_id')->unsigned();
+            $table->bigInteger('updated_by')->unsigned()->nullable();
             $table->string('status')->nullable(false)->default(self::DEFAULT_MATERIAL_STATUS);
             $table->timestamps();
         });
@@ -28,6 +29,14 @@ class CreateMaterialsTable extends Migration
         Schema::table('materials', function (Blueprint $table) {
             $table
                 ->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+        });
+
+        Schema::table('materials', function (Blueprint $table) {
+            $table
+                ->foreign('updated_by')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');

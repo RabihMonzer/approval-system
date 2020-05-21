@@ -40,11 +40,7 @@ class MaterialController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => ['required', 'max:255'],
-            'content' => ['required'],
-            'materialType' => ['required', 'max:255']
-        ]);
+        $this->validateFormRequest($request);
 
         $materialType = MaterialType::getMaterialType($request->materialType);
 
@@ -59,17 +55,27 @@ class MaterialController extends Controller
 
     public function show(Material $material)
     {
-        return view('materials.show', ['material' => $material, 'availableMaterialTypes' => MaterialType::all()]);
+        return view('materials.show', compact('material'));
     }
 
     public function edit(Material $material)
     {
-        return view('materials.edit', compact($material));
+        return view('materials.edit', ['material' => $material, 'availableMaterialTypes' => MaterialType::all()]);
     }
 
     public function update(Request $request, Material $material)
     {
-        dd('update123');
+        $this->validateFormRequest($request);
+
+        $materialType = MaterialType::getMaterialType($request->materialType);
+
+        if (!$materialType instanceof MaterialType) {
+            $materialType = MaterialType::createMaterialType($request->materialType);
+        }
+
+        $material->updateMaterialByRequest($request, $materialType);
+
+        return redirect()->route('materials.show', $material->id);
     }
 
     public function destroy(Material $material)
@@ -96,5 +102,18 @@ class MaterialController extends Controller
         $material->delete();
 
         return redirect()->route('materials.index');
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    private function validateFormRequest(Request $request): void
+    {
+        $this->validate($request, [
+            'title' => ['required', 'max:255'],
+            'content' => ['required'],
+            'materialType' => ['required', 'max:255']
+        ]);
     }
 }

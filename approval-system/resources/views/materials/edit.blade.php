@@ -1,23 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
+    <h2 class="font-weight-bold">Edit Material</h2>
+    <hr>
+    @if(empty($availableMaterialTypes))
+        <h4>There are no material types, please go to <a href="{{ route('material-types.create') }}" class="href">this
+                link</a> and create a material type before</h4>
+    @else
 
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                        You are logged in!
-                    </div>
+        <div class="w-75 text-left p-4">
+            <form method="POST" action="{{ route('materials.update', $material->id) }}">
+                @method('PUT')
+                @csrf
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input name="title" value="{{ $material->title }}" type="text" class="form-control" id="title" placeholder="Write a title here">
                 </div>
+
+                <div class="form-group">
+
+                    <label for="materialTypes">Material Type</label>
+                    <input name="materialType" class="form-control" required type="text" list="materialTypes"
+                           placeholder="{{ $material->type->type}}"/>
+                    <datalist id="materialTypes">
+                        @foreach($availableMaterialTypes as $availableMaterialType)
+                            <option>{{ $availableMaterialType->type }}</option>
+                        @endforeach
+                    </datalist>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Content</label>
+                    <textarea name="content" required class="form-control" id="content" rows="3"
+                              placeholder="Write all what you need to publish!">{{ $material->content }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Material</button>
+            </form>
+
+            <div class="m-4">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
-    </div>
+    @endif
+
 @endsection

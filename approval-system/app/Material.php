@@ -40,4 +40,17 @@ class Material extends Model
             'status' => $user->isManager() ? MaterialStatusDictionary::APPROVED : MaterialStatusDictionary::PENDING_APPROVAL
         ]);
     }
+
+    public function updateMaterialByRequest(Request $request, MaterialType $materialType): void
+    {
+        $user = auth()->user();
+
+        $this->updated_by = $user->id;
+        $this->title = $request->get('title');
+        $this->content = $request->get('content');
+        $this->type_id = $materialType->id;
+        $this->status = $user->isManager() ? MaterialStatusDictionary::APPROVED : MaterialStatusDictionary::PENDING_APPROVAL;
+
+        $this->save();
+    }
 }
