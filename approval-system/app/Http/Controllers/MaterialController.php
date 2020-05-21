@@ -80,8 +80,7 @@ class MaterialController extends Controller
 
     public function destroy(Material $material)
     {
-        $rejectedMaterialLog = RejectedMaterialLog::createRejectedMaterialLog($material);
-        $rejectedMaterialLog->save();
+        RejectedMaterialLog::createRejectedMaterialLog($material);
 
         $material->delete();
 
@@ -93,15 +92,6 @@ class MaterialController extends Controller
         $material->approve();
 
         return redirect()->route('materials.show', $material->id);
-    }
-
-    public function decline(Request $request, Material $material)
-    {
-        RejectedMaterialLog::createRejectedMaterialLog($material);
-
-        $material->delete();
-
-        return redirect()->route('materials.index');
     }
 
     /**

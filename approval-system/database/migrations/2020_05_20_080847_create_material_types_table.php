@@ -25,14 +25,6 @@ class CreateMaterialTypesTable extends Migration
                 ->references('id')
                 ->on('material_types');
         });
-
-
-        Schema::table('rejected_material_logs', function (Blueprint $table) {
-            $table
-                ->foreign('type_id')
-                ->references('id')
-                ->on('material_types');
-        });
     }
 
     /**

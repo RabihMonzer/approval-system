@@ -15,16 +15,15 @@ class RejectedMaterialLog extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function materialType()
+    public function createdBy()
     {
-        return $this->belongsTo(MaterialType::class);
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public static function createRejectedMaterialLog(Material $material)
     {
         $rejectedMaterialLog = new RejectedMaterialLog([
             'user_id' => $material->user->id,
-            'type_id' => $material->type->id,
             'title' => $material->title,
             'content' => $material->content,
             'created_by' => auth()->user()->id,

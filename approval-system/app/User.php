@@ -58,11 +58,20 @@ class User extends Authenticatable
 
     public function getMaterials()
     {
-        if (RoleDictionary::ROLE_MANAGER === $this->role->name) {
+        if ($this->isManager()) {
             return Material::orderByDesc('created_at')->get();
         }
 
-        return $this->materials()->latest();
+        return $this->materials()->orderByDesc('created_at')->get();
+    }
+
+    public function getRejectedMaterialsLog()
+    {
+        if ($this->isManager()) {
+            return RejectedMaterialLog::orderByDesc('created_at')->get();
+        }
+
+        return $this->rejectedMaterialLogs()->orderByDesc('created_at')->get();
     }
 
     public function isManager(): bool

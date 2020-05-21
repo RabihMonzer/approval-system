@@ -32,14 +32,16 @@
             <a href="{{ route('materials.index')  }}"
                class="list-group-item list-group-item-action bg-light">Dashboard</a>
             <a href="{{  route('materials.create') }}" class="list-group-item list-group-item-action bg-light">Create Material</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+            <a href="{{ route('rejected-materials-log.index') }}" class="list-group-item list-group-item-action bg-light">Rejected Material</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+            @auth()
             <a class="list-group-item list-group-item-action bg-light" href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                 {{ __('Logout') }}
             </a>
+            @endauth
 
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf

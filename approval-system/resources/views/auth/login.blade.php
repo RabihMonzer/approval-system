@@ -62,6 +62,8 @@
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+                                <hr>
+                                <div><a href="{{route('register')}}">Register</a></div>
                             </div>
                         </div>
                     </form>

@@ -16,7 +16,6 @@ class CreateRejectedMaterialLogsTable extends Migration
         Schema::create('rejected_material_logs', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('type_id')->unsigned();
             $table->string('title')->nullable(false);
             $table->string('content')->nullable(false);
             $table->bigInteger('created_by')->nullable(false)->unsigned();
@@ -26,6 +25,14 @@ class CreateRejectedMaterialLogsTable extends Migration
         Schema::table('rejected_material_logs', function (Blueprint $table) {
             $table
                 ->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+        });
+
+        Schema::table('rejected_material_logs', function (Blueprint $table) {
+            $table
+                ->foreign('created_by')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');

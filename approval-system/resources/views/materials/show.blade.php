@@ -13,13 +13,6 @@
                 <a href="{{ route('materials.edit', $material->id) }}" style="font-size:55px"><i
                         class="fa fa-pencil-square-o p-4"></i></a>
             </div>
-            <form action="{{route('materials.destroy', $material->id)}}" method="post" style="display: inline;">
-                @csrf
-                @method('delete')
-                <button type="submit" class="btn text-danger" style="display: inline;">
-                    <a style="font-size: 50px"><i class="fa fa-trash p-4"></i></a>
-                </button>
-            </form>
 
             <form action="{{ route('material.approve', $material->id) }}" method="POST" style="display: inline;">
                 @csrf
@@ -29,10 +22,10 @@
                 </button>
             </form>
 
-            <form action="{{ route('material.decline', $material->id) }}" method="POST" style="display: inline;">
+            <form action="{{ route('materials.destroy', $material->id) }}" method="POST" style="display: inline;">
                 @csrf
-                @method('put')
-                <button type="submit" class="btn text-warning" style="display: inline;">
+                @method('delete')
+                <button type="submit" class="btn text-danger" style="display: inline;">
                     <a style="font-size: 50px"><i class="fa fa-times p-4"></i></a>
                 </button>
             </form>

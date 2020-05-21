@@ -86,6 +86,9 @@
                                 </button>
                             </div>
                         </div>
+
+                        <hr>
+                        <div>Already Have an Account? <a href="{{ route('login') }}"> Login</a></div>
                     </form>
                 </div>
             </div>

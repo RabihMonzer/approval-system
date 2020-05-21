@@ -28,7 +28,6 @@ Route::get('/materials/{material}', 'MaterialController@show')->name('materials.
 Route::get('/materials/{material}/edit', 'MaterialController@edit')->name('materials.edit');
 Route::post('/materials', 'MaterialController@store')->name('materials.store');
 Route::put('/materials/approve/{material}', 'MaterialController@approve')->name('material.approve');
-Route::put('/materials/decline/{material}', 'MaterialController@decline')->name('material.decline');
 Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
 Route::delete('/materials/{material}', 'MaterialController@destroy')->name('materials.destroy');
 
@@ -40,3 +39,6 @@ Route::get('/material-types/{materialType}/edit', 'MaterialTypeController@edit')
 Route::post('/material-types', 'MaterialTypeController@store')->name('material-types.store');
 Route::put('/material-types/{materialType}', 'MaterialTypeController@update')->name('material-types.update');
 Route::delete('/material-types/{materialType}', 'MaterialTypeController@destroy')->name('material-types.destroy');
+
+// Routes for Rejected Material Logs
+Route::get('/rejected-materials-log', 'RejectedMaterialLogController@index')->name('rejected-materials-log.index');
