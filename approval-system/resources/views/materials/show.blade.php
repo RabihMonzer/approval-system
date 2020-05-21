@@ -13,6 +13,15 @@
                 <a href="{{ route('materials.edit', $material->id) }}" style="font-size:55px"><i
                         class="fa fa-pencil-square-o p-4"></i></a>
             </div>
+
+            <form action="{{ route('materials.destroy', $material->id) }}" method="POST" style="display: inline;">
+                @csrf
+                @method('delete')
+                <button type="submit" class="btn text-warning" style="display: inline;">
+                    <a style="font-size: 50px"><i class="fa fa-trash p-4"></i></a>
+                </button>
+            </form>
+
             @if(auth()->user()->isManager())
 
                 @if(\App\Dictionaries\MaterialStatusDictionary::APPROVED !== $material->status)
@@ -26,7 +35,7 @@
                     </form>
                 @endif
 
-                <form action="{{ route('materials.destroy', $material->id) }}" method="POST" style="display: inline;">
+                <form action="{{ route('material.decline', $material->id) }}" method="POST" style="display: inline;">
                     @csrf
                     @method('delete')
                     <button type="submit" class="btn text-danger" style="display: inline;">

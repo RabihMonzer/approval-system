@@ -23,6 +23,7 @@ Route::get('/materials/{material}', 'MaterialController@show')->name('materials.
 Route::get('/materials/{material}/edit', 'MaterialController@edit')->name('materials.edit');
 Route::post('/materials', 'MaterialController@store')->name('materials.store');
 Route::put('/materials/approve/{material}', 'MaterialController@approve')->name('material.approve');
+Route::delete('/materials/decline/{material}', 'MaterialController@decline')->name('material.decline');
 Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
 Route::delete('/materials/{material}', 'MaterialController@destroy')->name('materials.destroy');
 

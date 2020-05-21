@@ -8,6 +8,7 @@ use App\Dictionaries\UserMessagesDictionary;
 use App\Material;
 use App\MaterialType;
 use App\RejectedMaterialLog;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -54,16 +55,21 @@ class MaterialController extends Controller
 
     public function show(Material $material)
     {
+        $this->abortIfUserIsNotOwnerOfMaterialAndNotManager($material);
+
         return view('materials.show', compact('material'));
     }
 
     public function edit(Material $material)
     {
+        $this->abortIfUserIsNotOwnerOfMaterialAndNotManager($material);
+
         return view('materials.edit', ['material' => $material, 'availableMaterialTypes' => MaterialType::all()]);
     }
 
     public function update(Request $request, Material $material)
     {
+        $this->abortIfUserIsNotOwnerOfMaterialAndNotManager($material);
         $this->validateFormRequest($request);
 
         $materialType = MaterialType::getMaterialType($request->materialType);
@@ -79,9 +85,7 @@ class MaterialController extends Controller
 
     public function destroy(Material $material)
     {
-        $this->denyUnlessUserIsManager();
-
-        RejectedMaterialLog::createRejectedMaterialLog($material);
+        $this->abortIfUserIsNotOwnerOfMaterialAndNotManager($material);
 
         $material->delete();
 
@@ -90,11 +94,22 @@ class MaterialController extends Controller
 
     public function approve(Request $request, Material $material)
     {
-        $this->denyUnlessUserIsManager();
+        $this->aboutUnlessUserIsManager();
 
         $material->approve();
 
         return redirect()->route('materials.show', $material->id);
+    }
+
+    public function decline(Request $request, Material $material)
+    {
+        $this->aboutUnlessUserIsManager();
+
+        RejectedMaterialLog::createRejectedMaterialLog($material);
+
+        $material->delete();
+
+        return redirect()->route('materials.index')->with('message', UserMessagesDictionary::MATERIAL_DELETED);
     }
 
     /**
@@ -110,9 +125,18 @@ class MaterialController extends Controller
         ]);
     }
 
-    private function denyUnlessUserIsManager(): void
+    private function aboutUnlessUserIsManager(): void
     {
         if (!auth()->user()->isManager()) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
+    }
+
+    private function abortIfUserIsNotOwnerOfMaterialAndNotManager(Material $material): void
+    {
+        $currentLoggedInUser = auth()->user();
+
+        if (!$currentLoggedInUser->isManager() && !$currentLoggedInUser === $material->user()) {
             abort(Response::HTTP_FORBIDDEN);
         }
     }
