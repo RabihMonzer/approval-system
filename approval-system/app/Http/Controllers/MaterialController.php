@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class MaterialController extends Controller
 {
@@ -78,6 +79,8 @@ class MaterialController extends Controller
 
     public function destroy(Material $material)
     {
+        $this->denyUnlessUserIsManager();
+
         RejectedMaterialLog::createRejectedMaterialLog($material);
 
         $material->delete();
@@ -87,6 +90,8 @@ class MaterialController extends Controller
 
     public function approve(Request $request, Material $material)
     {
+        $this->denyUnlessUserIsManager();
+
         $material->approve();
 
         return redirect()->route('materials.show', $material->id);
@@ -103,5 +108,12 @@ class MaterialController extends Controller
             'content' => ['required'],
             'materialType' => ['required', 'max:255']
         ]);
+    }
+
+    private function denyUnlessUserIsManager(): void
+    {
+        if (!auth()->user()->isManager()) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
     }
 }

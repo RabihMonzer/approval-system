@@ -13,22 +13,28 @@
                 <a href="{{ route('materials.edit', $material->id) }}" style="font-size:55px"><i
                         class="fa fa-pencil-square-o p-4"></i></a>
             </div>
+            @if(auth()->user()->isManager())
 
-            <form action="{{ route('material.approve', $material->id) }}" method="POST" style="display: inline;">
-                @csrf
-                @method('put')
-                <button type="submit" class="btn text-success" style="display: inline;">
-                    <a style="font-size: 50px;"><i class="fa fa-check p-4"></i></a>
-                </button>
-            </form>
+                @if(\App\Dictionaries\MaterialStatusDictionary::APPROVED !== $material->status)
+                    <form action="{{ route('material.approve', $material->id) }}" method="POST"
+                          style="display: inline;">
+                        @csrf
+                        @method('put')
+                        <button type="submit" class="btn text-success" style="display: inline;">
+                            <a style="font-size: 50px;"><i class="fa fa-check p-4"></i></a>
+                        </button>
+                    </form>
+                @endif
 
-            <form action="{{ route('materials.destroy', $material->id) }}" method="POST" style="display: inline;">
-                @csrf
-                @method('delete')
-                <button type="submit" class="btn text-danger" style="display: inline;">
-                    <a style="font-size: 50px"><i class="fa fa-times p-4"></i></a>
-                </button>
-            </form>
+                <form action="{{ route('materials.destroy', $material->id) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('delete')
+                    <button type="submit" class="btn text-danger" style="display: inline;">
+                        <a style="font-size: 50px"><i class="fa fa-times p-4"></i></a>
+                    </button>
+                </form>
+
+            @endif
 
         </div>
         <div class="card-footer text-muted">

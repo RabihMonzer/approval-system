@@ -13,13 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
 // Routes for Materials
 Route::get('/materials', 'MaterialController@index')->name('materials.index');
@@ -30,15 +25,6 @@ Route::post('/materials', 'MaterialController@store')->name('materials.store');
 Route::put('/materials/approve/{material}', 'MaterialController@approve')->name('material.approve');
 Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
 Route::delete('/materials/{material}', 'MaterialController@destroy')->name('materials.destroy');
-
-// Routes For Material Types
-Route::get('/material-types', 'MaterialTypeController@index')->name('material-types.index');
-Route::get('/material-types/create', 'MaterialTypeController@create')->name('material-types.create');
-Route::get('/material-types/{materialType}', 'MaterialTypeController@show')->name('material-types.show');
-Route::get('/material-types/{materialType}/edit', 'MaterialTypeController@edit')->name('material-types.edit');
-Route::post('/material-types', 'MaterialTypeController@store')->name('material-types.store');
-Route::put('/material-types/{materialType}', 'MaterialTypeController@update')->name('material-types.update');
-Route::delete('/material-types/{materialType}', 'MaterialTypeController@destroy')->name('material-types.destroy');
 
 // Routes for Rejected Material Logs
 Route::get('/rejected-materials-log', 'RejectedMaterialLogController@index')->name('rejected-materials-log.index');
