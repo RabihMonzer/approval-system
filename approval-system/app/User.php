@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use App\Dictionaries\RoleDictionary;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -56,13 +55,21 @@ class User extends Authenticatable
         return $this->hasMany(RejectedMaterialLog::class);
     }
 
-    public function getMaterials()
+    public function getMaterials(?string $status)
     {
         if ($this->isManager()) {
-            return Material::orderByDesc('created_at')->get();
+            return is_null($status) ? Material::orderByDesc('created_at')->get()
+                : Material::where('status', '=', $status)->orderByDesc('created_at')->get();
         }
 
-        return $this->materials()->orderByDesc('created_at')->get();
+        return null === $status ?
+            $this->materials()->orderByDesc('created_at')->get()
+            : $this->materials()->where('status', '=', $status)->orderByDesc('created_at')->get();
+    }
+
+    private function filterMaterialsByStatus(Collection $materials, ?string $status)
+    {
+
     }
 
     public function getRejectedMaterialsLog()

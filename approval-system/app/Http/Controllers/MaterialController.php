@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dictionaries\MaterialStatusDictionary;
 use App\Dictionaries\UserMessagesDictionary;
 use App\Material;
 use App\MaterialType;
 use App\RejectedMaterialLog;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -25,11 +23,11 @@ class MaterialController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
 
-        return view('materials.index', ['materials' => $user->getMaterials()]);
+        return view('materials.index', ['materials' => $user->getMaterials($request->get('status'))]);
     }
 
     public function create()
