@@ -8,7 +8,6 @@ use App\Dictionaries\UserMessagesDictionary;
 use App\Material;
 use App\MaterialType;
 use App\RejectedMaterialLog;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -94,7 +93,7 @@ class MaterialController extends Controller
 
     public function approve(Request $request, Material $material)
     {
-        $this->aboutUnlessUserIsManager();
+        $this->abortUnlessUserIsManager();
 
         $material->approve();
 
@@ -103,7 +102,7 @@ class MaterialController extends Controller
 
     public function decline(Request $request, Material $material)
     {
-        $this->aboutUnlessUserIsManager();
+        $this->abortUnlessUserIsManager();
 
         RejectedMaterialLog::createRejectedMaterialLog($material);
 
@@ -125,7 +124,7 @@ class MaterialController extends Controller
         ]);
     }
 
-    private function aboutUnlessUserIsManager(): void
+    private function abortUnlessUserIsManager(): void
     {
         if (!auth()->user()->isManager()) {
             abort(Response::HTTP_FORBIDDEN);
