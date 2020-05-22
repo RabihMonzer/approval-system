@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Dictionaries\RoleDictionary;
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
-use App\Role;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\DB;
@@ -54,9 +53,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $role = DB::table('roles')->where('name', $data['role'])->get()->first();
-
-        if (null === $role) {
+        if (!in_array($data['role'], RoleDictionary::getValidRoleStatuses())) {
             throw ValidationException::withMessages(['field_name' => 'Invalid Role']);
         }
 
