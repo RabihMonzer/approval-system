@@ -136,7 +136,7 @@ class MaterialController extends Controller
     {
         $currentLoggedInUser = auth()->user();
 
-        if (!$currentLoggedInUser->isManager() && !$currentLoggedInUser === $material->user()) {
+        if (!$currentLoggedInUser->isManager() && $material->user->isNot($currentLoggedInUser)) {
             abort(Response::HTTP_FORBIDDEN);
         }
     }
