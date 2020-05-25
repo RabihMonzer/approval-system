@@ -6,5 +6,4 @@ final class MaterialStatusDictionary
 {
     const PENDING_APPROVAL = 'Pending Approval';
     const APPROVED = 'Approved';
-    const DECLINED = 'Declined';
 }

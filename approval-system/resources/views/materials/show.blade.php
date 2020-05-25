@@ -33,16 +33,16 @@
                             <a style="font-size: 50px;"><i class="fa fa-check p-4"></i></a>
                         </button>
                     </form>
+
+                    <form action="{{ route('material.decline', $material->id) }}" method="POST"
+                          style="display: inline;">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn text-danger" style="display: inline;">
+                            <a style="font-size: 50px"><i class="fa fa-times p-4"></i></a>
+                        </button>
+                    </form>
                 @endif
-
-                <form action="{{ route('material.decline', $material->id) }}" method="POST" style="display: inline;">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn text-danger" style="display: inline;">
-                        <a style="font-size: 50px"><i class="fa fa-times p-4"></i></a>
-                    </button>
-                </form>
-
             @endif
 
         </div>

@@ -30,5 +30,7 @@ class RejectedMaterialLog extends Model
         ]);
 
         $rejectedMaterialLog->save();
+
+        return $rejectedMaterialLog;
     }
 }

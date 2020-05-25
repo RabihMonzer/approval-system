@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Dictionaries\UserMessagesDictionary;
+use App\Events\MaterialApprovedEvent;
+use App\Events\MaterialRejectedEvent;
 use App\Material;
 use App\MaterialType;
 use App\RejectedMaterialLog;
 use Illuminate\Http\Request;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class MaterialController extends Controller
@@ -21,9 +20,6 @@ class MaterialController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * @return Application|Factory|View
-     */
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -97,6 +93,8 @@ class MaterialController extends Controller
 
         $material->approve();
 
+        event(new MaterialApprovedEvent($material));
+
         return redirect()->route('materials.show', $material->id);
     }
 
@@ -104,9 +102,11 @@ class MaterialController extends Controller
     {
         $this->abortUnlessUserIsManager();
 
-        RejectedMaterialLog::createRejectedMaterialLog($material);
+        $rejectedMaterialLog = RejectedMaterialLog::createRejectedMaterialLog($material);
 
         $material->delete();
+
+        event(new MaterialRejectedEvent($rejectedMaterialLog));
 
         return redirect()->route('materials.index')->with('message', UserMessagesDictionary::MATERIAL_DELETED);
     }
