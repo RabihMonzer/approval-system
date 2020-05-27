@@ -29,3 +29,11 @@ Route::delete('/materials/{material}', 'MaterialController@destroy')->name('mate
 
 // Routes for Rejected Material Logs
 Route::get('/rejected-materials-log', 'RejectedMaterialLogController@index')->name('rejected-materials-log.index');
+
+// APIs
+Route::prefix('api')->group(function () {
+
+    Route::get('/materials/{material}', 'MaterialAPIController@show')->name('material-api.show');
+    Route::get('/materials', 'MaterialAPIController@index')->name('material-api.index');
+
+});
