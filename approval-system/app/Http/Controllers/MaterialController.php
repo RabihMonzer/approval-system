@@ -30,6 +30,7 @@ class MaterialController extends Controller
     public function create()
     {
         $availableMaterialTypes = MaterialType::all();
+
         return view('materials.create', compact('availableMaterialTypes'));
     }
 
@@ -45,7 +46,8 @@ class MaterialController extends Controller
 
         Material::createNewMaterialByRequest($request, $materialType);
 
-        return redirect()->route('materials.create');
+        return redirect()->route('materials.create')
+            ->with('success', UserMessagesDictionary::MATERIAL_CREATED);
     }
 
     public function show(Material $material)
@@ -75,7 +77,8 @@ class MaterialController extends Controller
 
         $material->updateMaterialByRequest($request, $materialType);
 
-        return redirect()->route('materials.show', $material->id);
+        return redirect()->route('materials.show', $material->id)
+            ->with('success', UserMessagesDictionary::MATERIAL_UPDATED);
     }
 
     public function destroy(Material $material)
@@ -84,7 +87,7 @@ class MaterialController extends Controller
 
         $material->delete();
 
-        return redirect()->route('materials.index')->with('message', UserMessagesDictionary::MATERIAL_DELETED);
+        return redirect()->route('materials.index')->with('success', UserMessagesDictionary::MATERIAL_DELETED);
     }
 
     public function approve(Request $request, Material $material)
@@ -95,7 +98,8 @@ class MaterialController extends Controller
 
         event(new MaterialApprovedEvent($material));
 
-        return redirect()->route('materials.show', $material->id);
+        return redirect()->route('materials.show', $material->id)
+            ->with('success', UserMessagesDictionary::MATERIAL_APPROVED);
     }
 
     public function decline(Request $request, Material $material)
@@ -108,7 +112,9 @@ class MaterialController extends Controller
 
         event(new MaterialRejectedEvent($rejectedMaterialLog));
 
-        return redirect()->route('materials.index')->with('message', UserMessagesDictionary::MATERIAL_DELETED);
+
+        return redirect()->route('materials.index')
+            ->with('success', UserMessagesDictionary::MATERIAL_REJECTED);
     }
 
     /**

@@ -69,11 +69,8 @@
             </div>
         </nav>
 
-        <div>
-            @yield('messages')
-        </div>
-
         <div class="text-center m-4 pt-2">
+            @include('partials.alerts')
             @yield('content')
         </div>
 
