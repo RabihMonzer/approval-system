@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Dictionaries\UserMessagesDictionary;
 use App\DTO\Material\MaterialDTO;
 use App\DTO\ResponseData;
 use App\DTO\ResponsePaginationData;
 use App\DTOFactory\Material\MaterialDTOCollection;
 use App\Material;
+use App\MaterialType;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,15 +32,21 @@ class MaterialAPIController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $this->validateFormRequest($request);
+
+        $materialType = MaterialType::getMaterialType($request->materialType);
+
+        if (!$materialType instanceof MaterialType) {
+            $materialType = MaterialType::createMaterialType($request->materialType);
+        }
+
+        $material = Material::createNewMaterialByRequest($request, $materialType);
+
+        return new ResponseData([
+            'data' => MaterialDTO::fromModel($material),
+        ]);
     }
 
     public function show(Material $material)
@@ -80,5 +88,18 @@ class MaterialAPIController extends Controller
         if (!$currentLoggedInUser->isManager() && $material->user->isNot($currentLoggedInUser)) {
             abort(Response::HTTP_FORBIDDEN);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    private function validateFormRequest(Request $request): void
+    {
+        $this->validate($request, [
+            'title' => ['required', 'max:255'],
+            'content' => ['required'],
+            'materialType' => ['required', 'max:255']
+        ]);
     }
 }
