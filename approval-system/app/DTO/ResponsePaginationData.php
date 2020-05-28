@@ -10,11 +10,12 @@ use Spatie\DataTransferObject\DataTransferObject;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ResponseData extends DataTransferObject implements Responsable
+final class ResponsePaginationData extends DataTransferObject implements Responsable
 {
-    public $status = 200;
+    public $collection;
 
-    public $data;
+    /** @var int  */
+    public $status = 200;
 
     /**
      * @param Request $request
@@ -24,7 +25,7 @@ final class ResponseData extends DataTransferObject implements Responsable
     {
         return response()->json(
             [
-                'data' => $this->data->toArray(),
+                'data' => $this->collection->toArray(),
             ],
             $this->status
         );

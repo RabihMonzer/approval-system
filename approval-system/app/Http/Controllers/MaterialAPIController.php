@@ -6,8 +6,12 @@ namespace App\Http\Controllers;
 
 use App\DTO\Material\MaterialDTO;
 use App\DTO\ResponseData;
+use App\DTO\ResponsePaginationData;
+use App\DTOFactory\Material\MaterialDTOCollection;
 use App\Material;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class MaterialAPIController extends Controller
@@ -19,7 +23,11 @@ class MaterialAPIController extends Controller
 
     public function index(Request $request)
     {
-        // in progress
+        $materials = auth()->user()->getMaterials($request->get('status'));
+
+        return new ResponsePaginationData([
+            'collection' => MaterialDTOCollection::fromCollection($materials),
+        ]);
     }
 
     /**
