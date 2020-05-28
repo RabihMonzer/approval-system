@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Dictionaries\UserMessagesDictionary;
 use App\DTO\Material\MaterialDTO;
 use App\DTO\ResponseData;
 use App\DTO\ResponsePaginationData;
@@ -75,15 +76,13 @@ class MaterialAPIController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Material  $material
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Material $material)
     {
-        //
+        $this->abortIfUserIsNotOwnerOfMaterialAndNotManager($material);
+
+        $material->delete();
+
+        return response('', Response::HTTP_NO_CONTENT);
     }
 
     private function abortIfUserIsNotOwnerOfMaterialAndNotManager(Material $material): void

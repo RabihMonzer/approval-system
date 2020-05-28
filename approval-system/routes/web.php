@@ -37,5 +37,6 @@ Route::prefix('api')->group(function () {
     Route::get('/materials', 'MaterialAPIController@index')->name('material-api.index');
     Route::post('/materials', 'MaterialAPIController@store')->name('material-api.store');
     Route::put('/materials/{material}', 'MaterialAPIController@update')->name('material-api.update');
+    Route::delete('/materials/{material}', 'MaterialAPIController@destroy')->name('material-api.destroy');
 
 });
