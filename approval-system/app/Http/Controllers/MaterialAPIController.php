@@ -6,11 +6,15 @@ namespace App\Http\Controllers;
 
 use App\Dictionaries\UserMessagesDictionary;
 use App\DTO\Material\MaterialDTO;
+use App\DTO\RejectedMaterialLog\RejectedMaterialLogDTO;
 use App\DTO\ResponseData;
 use App\DTO\ResponsePaginationData;
 use App\DTOFactory\Material\MaterialDTOCollection;
+use App\Events\MaterialApprovedEvent;
+use App\Events\MaterialRejectedEvent;
 use App\Material;
 use App\MaterialType;
+use App\RejectedMaterialLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -85,6 +89,34 @@ class MaterialAPIController extends Controller
         return response('', Response::HTTP_NO_CONTENT);
     }
 
+    public function approve(Request $request, Material $material)
+    {
+        $this->abortUnlessUserIsManager();
+
+        $material->approve();
+
+        event(new MaterialApprovedEvent($material));
+
+        return new ResponseData([
+            'data' => MaterialDTO::fromModel($material),
+        ]);
+    }
+
+    public function decline(Request $request, Material $material)
+    {
+        $this->abortUnlessUserIsManager();
+
+        $rejectedMaterialLog = RejectedMaterialLog::createRejectedMaterialLog($material);
+
+        $material->delete();
+
+        event(new MaterialRejectedEvent($rejectedMaterialLog));
+
+        return new ResponseData([
+            'data' => RejectedMaterialLogDTO::fromModel($rejectedMaterialLog),
+        ]);
+    }
+
     private function abortIfUserIsNotOwnerOfMaterialAndNotManager(Material $material): void
     {
         $currentLoggedInUser = auth()->user();
@@ -110,5 +142,12 @@ class MaterialAPIController extends Controller
             'content' => ['required'],
             'materialType' => ['required', 'max:255']
         ];
+    }
+
+    private function abortUnlessUserIsManager(): void
+    {
+        if (!auth()->user()->isManager()) {
+            abort(Response::HTTP_FORBIDDEN);
+        }
     }
 }
