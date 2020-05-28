@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\DTO\Material;
 
-use App\DTO\ModelDTOInterface;
 use App\Material;
 use Spatie\DataTransferObject\DataTransferObject;
 
-class MaterialDTO extends DataTransferObject implements ModelDTOInterface
+class MaterialDTO extends DataTransferObject
 {
     /** @var int */
     public $id;

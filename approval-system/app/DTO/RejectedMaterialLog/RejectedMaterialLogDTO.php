@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\DTO\RejectedMaterialLog;
 
-use App\DTO\ModelDTOInterface;
 use App\RejectedMaterialLog;
 use Spatie\DataTransferObject\DataTransferObject;
 
-class RejectedMaterialLogDTO extends DataTransferObject implements ModelDTOInterface
+class RejectedMaterialLogDTO extends DataTransferObject
 {
     /** @var int */
     public $id;
