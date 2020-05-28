@@ -36,5 +36,6 @@ Route::prefix('api')->group(function () {
     Route::get('/materials/{material}', 'MaterialAPIController@show')->name('material-api.show');
     Route::get('/materials', 'MaterialAPIController@index')->name('material-api.index');
     Route::post('/materials', 'MaterialAPIController@store')->name('material-api.store');
+    Route::put('/materials/{material}', 'MaterialAPIController@update')->name('material-api.update');
 
 });

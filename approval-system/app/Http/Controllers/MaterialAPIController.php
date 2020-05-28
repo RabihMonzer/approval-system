@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dictionaries\UserMessagesDictionary;
 use App\DTO\Material\MaterialDTO;
 use App\DTO\ResponseData;
 use App\DTO\ResponsePaginationData;
 use App\DTOFactory\Material\MaterialDTOCollection;
 use App\Material;
 use App\MaterialType;
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class MaterialAPIController extends Controller
@@ -58,16 +56,23 @@ class MaterialAPIController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Material  $material
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Material $material)
     {
-        //
+        $this->abortIfUserIsNotOwnerOfMaterialAndNotManager($material);
+
+        $this->validateFormRequest($request);
+
+        $materialType = MaterialType::getMaterialType($request->materialType);
+
+        if (!$materialType instanceof MaterialType) {
+            $materialType = MaterialType::createMaterialType($request->materialType);
+        }
+
+        $material->updateMaterialByRequest($request, $materialType);
+
+        return new ResponseData([
+            'data' => MaterialDTO::fromModel($material),
+        ]);
     }
 
     /**
@@ -90,16 +95,21 @@ class MaterialAPIController extends Controller
         }
     }
 
-    /**
-     * @param Request $request
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    private function validateFormRequest(Request $request): void
+    private function validateFormRequest(Request $request)
     {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), $this->getValidationRules());
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    private function getValidationRules(): array
+    {
+        return [
             'title' => ['required', 'max:255'],
             'content' => ['required'],
             'materialType' => ['required', 'max:255']
-        ]);
+        ];
     }
 }
