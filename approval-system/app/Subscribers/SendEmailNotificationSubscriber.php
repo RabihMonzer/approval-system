@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Subscribers;
 
 use App\Dictionaries\EmailSubjectsDictionary;
-use App\Events\MaterialApprovedEvent;
-use App\Events\MaterialRejectedEvent;
+use App\Events\NewsApprovedEvent;
+use App\Events\NewsRejectedEvent;
 use App\User;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,22 +14,22 @@ class SendEmailNotificationSubscriber
 {
     public function subscribe($events)
     {
-        $events->listen(MaterialApprovedEvent::class, 'App\Subscribers\SendEmailNotificationSubscriber@sendEmailNotificationForMaterialApproval');
-        $events->listen(MaterialRejectedEvent::class, 'App\Subscribers\SendEmailNotificationSubscriber@sendEmailNotificationForMaterialRejection');
+        $events->listen(NewsApprovedEvent::class, 'App\Subscribers\SendEmailNotificationSubscriber@sendEmailNotificationForNewsApproval');
+        $events->listen(NewsRejectedEvent::class, 'App\Subscribers\SendEmailNotificationSubscriber@sendEmailNotificationForNewsRejection');
     }
 
-    public function sendEmailNotificationForMaterialApproval($event)
+    public function sendEmailNotificationForNewsApproval($event)
     {
         $currentLoggedInUser = auth()->user();
 
-        $material = $event->getMaterial();
+        $news = $event->getNews();
 
-        if ($material->user->isNot($currentLoggedInUser)) {
-            $this->sendEmail($material->user->email, $currentLoggedInUser->email, $event->getEmailSubject());
+        if ($news->createdBy->isNot($currentLoggedInUser)) {
+            $this->sendEmail($news->createdBy->email, $currentLoggedInUser->email, $event->getEmailSubject());
         }
     }
 
-    public function sendEmailNotificationForMaterialRejection($event)
+    public function sendEmailNotificationForNewsRejection($event)
     {
         $currentLoggedInUser = auth()->user();
 

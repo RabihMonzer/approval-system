@@ -4,6 +4,6 @@ namespace App\Dictionaries;
 
 final class EmailSubjectsDictionary
 {
-    const MATERIAL_APPROVED = 'Material Approved';
-    const MATERIAL_REJECTED = 'Material Rejected';
+    const NEWS_APPROVED = 'News Approved';
+    const NEWS_REJECTED = 'News Rejected';
 }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Dictionaries\UserMessagesDictionary;
-use App\Events\MaterialApprovedEvent;
-use App\Events\MaterialRejectedEvent;
+use App\Events\NewsApprovedEvent;
+use App\Events\NewsRejectedEvent;
 use App\Material;
 use App\MaterialType;
 use App\RejectedMaterialLog;
@@ -47,7 +47,7 @@ class MaterialController extends Controller
         Material::createNewMaterialByRequest($request, $materialType);
 
         return redirect()->route('materials.create')
-            ->with('success', UserMessagesDictionary::MATERIAL_CREATED);
+            ->with('success', UserMessagesDictionary::NEWS_CREATED);
     }
 
     public function show(Material $material)
@@ -78,7 +78,7 @@ class MaterialController extends Controller
         $material->updateMaterialByRequest($request, $materialType);
 
         return redirect()->route('materials.show', $material->id)
-            ->with('success', UserMessagesDictionary::MATERIAL_UPDATED);
+            ->with('success', UserMessagesDictionary::NEWS_UPDATED);
     }
 
     public function destroy(Material $material)
@@ -87,7 +87,7 @@ class MaterialController extends Controller
 
         $material->delete();
 
-        return redirect()->route('materials.index')->with('success', UserMessagesDictionary::MATERIAL_DELETED);
+        return redirect()->route('materials.index')->with('success', UserMessagesDictionary::NEWS_DELETED);
     }
 
     public function approve(Request $request, Material $material)
@@ -96,7 +96,7 @@ class MaterialController extends Controller
 
         $material->approve();
 
-        event(new MaterialApprovedEvent($material));
+        event(new NewsApprovedEvent($material));
 
         return redirect()->route('materials.show', $material->id)
             ->with('success', UserMessagesDictionary::MATERIAL_APPROVED);
@@ -110,7 +110,7 @@ class MaterialController extends Controller
 
         $material->delete();
 
-        event(new MaterialRejectedEvent($rejectedMaterialLog));
+        event(new NewsRejectedEvent($rejectedMaterialLog));
 
 
         return redirect()->route('materials.index')
@@ -124,7 +124,7 @@ class MaterialController extends Controller
     private function validateFormRequest(Request $request): void
     {
         $this->validate($request, [
-            'title' => ['required', 'max:255'],
+
             'content' => ['required'],
             'materialType' => ['required', 'max:255']
         ]);

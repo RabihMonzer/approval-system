@@ -17,7 +17,7 @@ class CreateNewsTable extends Migration
             $table->id();
             $table->string('title')->nullable(false);
             $table->text('description');
-            $table->string('image', 255)->default('image.png');
+            $table->string('image', 255)->default('default.png');
             $table->string('status');
             $table->bigInteger('created_by')->unsigned()->nullable(false);
             $table->bigInteger('updated_by')->unsigned()->nullable(true);

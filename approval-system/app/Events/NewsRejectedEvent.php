@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MaterialRejectedEvent
+class NewsRejectedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -40,6 +40,6 @@ class MaterialRejectedEvent
 
     public function getEmailSubject(): string
     {
-        return EmailSubjectsDictionary::MATERIAL_REJECTED;
+        return EmailSubjectsDictionary::NEWS_REJECTED;
     }
 }

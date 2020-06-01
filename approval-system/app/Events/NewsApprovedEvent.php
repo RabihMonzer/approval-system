@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Dictionaries\EmailSubjectsDictionary;
-use App\Dictionaries\MaterialStatusDictionary;
+use App\Dictionaries\NewsStatusDictionary;
 use App\Material;
+use App\News;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,23 +16,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MaterialApprovedEvent
+class NewsApprovedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var Material
+     * @var News
      */
-    private $material;
+    private $news;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Material $material)
+    public function __construct(News $news)
     {
-        $this->material = $material;
+        $this->news = $news;
     }
 
     /**
@@ -44,13 +45,13 @@ class MaterialApprovedEvent
         return new PrivateChannel('channel-name');
     }
 
-    public function getMaterial(): Material
+    public function getNews(): News
     {
-        return $this->material;
+        return $this->news;
     }
 
     public function getEmailSubject(): string
     {
-        return EmailSubjectsDictionary::MATERIAL_APPROVED;
+        return EmailSubjectsDictionary::NEWS_APPROVED;
     }
 }

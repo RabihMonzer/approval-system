@@ -4,7 +4,7 @@
     <h2 class="font-weight-bold">Create News</h2>
     <hr>
     <div class="w-75 text-left p-4">
-        <form method="POST" action="{{ route('materials.store') }}">
+        <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="title">Title</label>
@@ -13,14 +13,14 @@
 
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea name="description" required class="form-control" id="description" rows="3"
+                <textarea name="description"  class="form-control" id="description" rows="3"
                           placeholder="Write a description here"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="imageInput">File input</label>
-                <input data-preview="#preview" name="input_img" type="file" id="imageInput">
-                <img class="col-sm-6" id="preview"  src="">
+                <label for="imageInput">Image</label>
+                <input data-preview="#preview" name="image" type="file" id="imageInput">
+                <img class="col-sm-6" id="image"  src="">
             </div>
 
             <button type="submit" class="btn btn-primary">Create News</button>

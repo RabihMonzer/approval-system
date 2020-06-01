@@ -2,7 +2,7 @@
 
 namespace App\Dictionaries;
 
-final class MaterialStatusDictionary
+final class NewsStatusDictionary
 {
     const PENDING_APPROVAL = 'Pending Approval';
     const APPROVED = 'Approved';

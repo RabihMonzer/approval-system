@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use App\Dictionaries\MaterialStatusDictionary;
+use App\Dictionaries\NewsStatusDictionary;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -24,7 +24,7 @@ class Material extends Model
 
     public function approve(): void
     {
-        $this->status = MaterialStatusDictionary::APPROVED;
+        $this->status = NewsStatusDictionary::APPROVED;
         $this->save();
     }
 
@@ -37,7 +37,7 @@ class Material extends Model
             'title' => $request->get('title'),
             'content' => $request->get('content'),
             'type_id' => $materialType->id,
-            'status' => $user->isManager() ? MaterialStatusDictionary::APPROVED : MaterialStatusDictionary::PENDING_APPROVAL
+            'status' => $user->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL
         ]);
     }
 
@@ -49,7 +49,7 @@ class Material extends Model
         $this->title = $request->get('title');
         $this->content = $request->get('content');
         $this->type_id = $materialType->id;
-        $this->status = $user->isManager() ? MaterialStatusDictionary::APPROVED : MaterialStatusDictionary::PENDING_APPROVAL;
+        $this->status = $user->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL;
 
         $this->save();
     }

@@ -24,7 +24,7 @@
 
             @if(auth()->user()->isManager())
 
-                @if(\App\Dictionaries\MaterialStatusDictionary::APPROVED !== $material->status)
+                @if(\App\Dictionaries\NewsStatusDictionary::APPROVED !== $material->status)
                     <form action="{{ route('material.approve', $material->id) }}" method="POST"
                           style="display: inline;">
                         @csrf

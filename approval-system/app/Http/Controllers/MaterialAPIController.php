@@ -10,8 +10,8 @@ use App\DTO\RejectedMaterialLog\RejectedMaterialLogDTO;
 use App\DTO\ResponseData;
 use App\DTO\ResponsePaginationData;
 use App\DTOFactory\Material\MaterialDTOCollection;
-use App\Events\MaterialApprovedEvent;
-use App\Events\MaterialRejectedEvent;
+use App\Events\NewsApprovedEvent;
+use App\Events\NewsRejectedEvent;
 use App\Material;
 use App\MaterialType;
 use App\RejectedMaterialLog;
@@ -95,7 +95,7 @@ class MaterialAPIController extends Controller
 
         $material->approve();
 
-        event(new MaterialApprovedEvent($material));
+        event(new NewsApprovedEvent($material));
 
         return new ResponseData([
             'data' => MaterialDTO::fromModel($material),
@@ -110,7 +110,7 @@ class MaterialAPIController extends Controller
 
         $material->delete();
 
-        event(new MaterialRejectedEvent($rejectedMaterialLog));
+        event(new NewsRejectedEvent($rejectedMaterialLog));
 
         return new ResponseData([
             'data' => RejectedMaterialLogDTO::fromModel($rejectedMaterialLog),
