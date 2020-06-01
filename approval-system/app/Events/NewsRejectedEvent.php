@@ -3,7 +3,6 @@
 namespace App\Events;
 
 use App\Dictionaries\EmailSubjectsDictionary;
-use App\RejectedMaterialLog;
 use App\RejectedNewsLog;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;

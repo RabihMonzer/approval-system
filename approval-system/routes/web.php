@@ -16,17 +16,7 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 
-// Routes for Materials
-Route::get('/materials', 'MaterialController@index')->name('materials.index');
-Route::get('/materials/create', 'MaterialController@create')->name('materials.create');
-Route::get('/materials/{material}', 'MaterialController@show')->name('materials.show');
-Route::get('/materials/{material}/edit', 'MaterialController@edit')->name('materials.edit');
-Route::post('/materials', 'MaterialController@store')->name('materials.store');
-Route::put('/materials/approve/{material}', 'MaterialController@approve')->name('material.approve');
-Route::delete('/materials/decline/{material}', 'MaterialController@decline')->name('material.decline');
-Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
-Route::delete('/materials/{material}', 'MaterialController@destroy')->name('materials.destroy');
-
+// Routes for News
 Route::get('/news', 'NewsController@index')->name('news.index');
 Route::get('/news/create', 'NewsController@create')->name('news.create');
 Route::get('/news/{news}', 'NewsController@show')->name('news.show');
@@ -38,7 +28,7 @@ Route::put('/news/{news}', 'NewsController@update')->name('news.update');
 Route::delete('/news/{news}', 'NewsController@destroy')->name('news.destroy');
 
 
-// Routes for Rejected Material Logs
+// Routes for Rejected News Logs
 Route::get('/rejected-news-log', 'RejectedNewsLogController@index')->name('rejected-news-log.index');
 
 // APIs

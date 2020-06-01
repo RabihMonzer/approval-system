@@ -44,24 +44,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function materials()
-    {
-        return $this->hasMany(Material::class);
-    }
-
     public function news()
     {
         return $this->hasMany(News::class, 'created_by');
     }
 
-    public function rejectedMaterialLogs()
-    {
-        return $this->hasMany(RejectedMaterialLog::class);
-    }
-
     public function rejectedNewsLogs()
     {
-        return $this->hasMany(RejectedNewsLog::class, 'created_by');
+        return $this->hasMany(RejectedNewsLog::class, 'owner_id');
     }
 
     public function getNewsByStatus(?string $status)
@@ -74,15 +64,6 @@ class User extends Authenticatable
         return null === $status ?
             $this->news()->orderByDesc('created_at')->get()
             : $this->news()->where('status', '=', $status)->orderByDesc('created_at')->get();
-    }
-
-    public function getRejectedMaterialsLog()
-    {
-        if ($this->isManager()) {
-            return RejectedMaterialLog::orderByDesc('created_at')->get();
-        }
-
-        return $this->rejectedMaterialLogs()->orderByDesc('created_at')->get();
     }
 
     public function getRejectedNewsLogs()
