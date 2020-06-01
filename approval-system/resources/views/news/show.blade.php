@@ -39,7 +39,7 @@
                         </button>
                     </form>
 
-                    <form action="{{ route('news.decline', $news->id) }}" method="POST"
+                    <form action="{{ route('news.reject', $news->id) }}" method="POST"
                           style="display: inline;">
                         @csrf
                         @method('delete')

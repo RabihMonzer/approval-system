@@ -32,8 +32,8 @@
             <a href="{{ route('news.index')  }}"
                class="list-group-item list-group-item-action bg-light">News Dashboard</a>
             <a href="{{ route('news.create') }}" class="list-group-item list-group-item-action bg-light">Create News</a>
-            <a href="{{ route('rejected-materials-log.index') }}" class="list-group-item list-group-item-action bg-light">Rejected News</a>
-            <a href="{{ route('materials.index', ['status' => \App\Dictionaries\NewsStatusDictionary::PENDING_APPROVAL]) }}" class="list-group-item list-group-item-action bg-light">Pending Approval News</a>
+            <a href="{{ route('rejected-news-log.index') }}" class="list-group-item list-group-item-action bg-light">Rejected News</a>
+            <a href="{{ route('news.index', ['status' => \App\Dictionaries\NewsStatusDictionary::PENDING_APPROVAL]) }}" class="list-group-item list-group-item-action bg-light">Pending Approval News</a>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->

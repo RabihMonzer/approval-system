@@ -33,13 +33,13 @@ Route::get('/news/{news}', 'NewsController@show')->name('news.show');
 Route::get('/news/{news}/edit', 'NewsController@edit')->name('news.edit');
 Route::post('/news', 'NewsController@store')->name('news.store');
 Route::put('/news/approve/{news}', 'NewsController@approve')->name('news.approve');
-Route::delete('/news/decline/{news}', 'NewsController@decline')->name('news.decline');
+Route::delete('/news/reject/{news}', 'NewsController@reject')->name('news.reject');
 Route::put('/news/{news}', 'NewsController@update')->name('news.update');
 Route::delete('/news/{news}', 'NewsController@destroy')->name('news.destroy');
 
 
 // Routes for Rejected Material Logs
-Route::get('/rejected-materials-log', 'RejectedMaterialLogController@index')->name('rejected-materials-log.index');
+Route::get('/rejected-news-log', 'RejectedNewsLogController@index')->name('rejected-news-log.index');
 
 // APIs
 Route::prefix('api')->group(function () {

@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Dictionaries\UserMessagesDictionary;
 use App\Events\NewsApprovedEvent;
+use App\Events\NewsRejectedEvent;
 use App\News;
+use App\RejectedNewsLog;
 use App\Validators\UserRoleValidatorTrait;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -89,21 +92,19 @@ class NewsController extends Controller
             ->with('success', UserMessagesDictionary::NEWS_APPROVED);
     }
 
-    public function decline(Request $request, News $news)
+    public function reject(Request $request, News $news)
     {
         $this->abortUnlessUserIsManager();
 
-        $rejectedMaterialLog = RejectedMaterialLog::createRejectedMaterialLog($material);
+        $rejectedNewsLog = RejectedNewsLog::createRejectedNewsLog($news);
 
-        $material->delete();
+        $news->delete();
 
-        event(new MaterialRejectedEvent($rejectedMaterialLog));
+        event(new NewsRejectedEvent($rejectedNewsLog));
 
-
-        return redirect()->route('materials.index')
-            ->with('success', UserMessagesDictionary::MATERIAL_REJECTED);
+        return redirect()->route('news.index')
+            ->with('success', UserMessagesDictionary:: NEWS_REJECTED);
     }
-
 
     private function abortIfUserIsNotOwnerOfNewsAndNotManager(News $news): void
     {

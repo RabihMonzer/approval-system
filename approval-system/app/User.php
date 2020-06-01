@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App;
 
 use App\Dictionaries\RoleDictionary;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -60,6 +59,11 @@ class User extends Authenticatable
         return $this->hasMany(RejectedMaterialLog::class);
     }
 
+    public function rejectedNewsLogs()
+    {
+        return $this->hasMany(RejectedNewsLog::class, 'created_by');
+    }
+
     public function getNewsByStatus(?string $status)
     {
         if ($this->isManager()) {
@@ -79,6 +83,15 @@ class User extends Authenticatable
         }
 
         return $this->rejectedMaterialLogs()->orderByDesc('created_at')->get();
+    }
+
+    public function getRejectedNewsLogs()
+    {
+        if ($this->isManager()) {
+            return RejectedNewsLog::orderByDesc('created_at')->get();
+        }
+
+        return $this->rejectedNewsLogs()->orderByDesc('created_at')->get();
     }
 
     public function isManager(): bool

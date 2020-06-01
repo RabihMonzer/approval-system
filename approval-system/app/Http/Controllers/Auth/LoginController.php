@@ -39,7 +39,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->redirectTo = route('materials.index');
+        $this->redirectTo = route('news.index');
     }
 
     public function logout(Request $request)

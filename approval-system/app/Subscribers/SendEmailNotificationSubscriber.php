@@ -33,10 +33,10 @@ class SendEmailNotificationSubscriber
     {
         $currentLoggedInUser = auth()->user();
 
-        $rejectedMaterialLog = $event->getRejectedMaterialLog();
+        $rejectedNewsLog = $event->getRejectedNewsLog();
 
-        if ($rejectedMaterialLog->user->isNot($currentLoggedInUser)) {
-            $this->sendEmail($rejectedMaterialLog->user->email, $currentLoggedInUser->email, $event->getEmailSubject());
+        if ($rejectedNewsLog->owner->isNot($currentLoggedInUser)) {
+            $this->sendEmail($rejectedNewsLog->owner->email, $currentLoggedInUser->email, $event->getEmailSubject());
         }
     }
 

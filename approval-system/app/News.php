@@ -53,7 +53,7 @@ class News extends Model
         $this->title = $request->get('title');
         $this->description = $request->get('description');
         $this->status = $user->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL;
-        $this->image = $filename ?? 'default.png';
+        $this->image = $filename ?? $this->image;
 
         $this->save();
     }

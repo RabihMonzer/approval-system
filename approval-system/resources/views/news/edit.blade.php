@@ -24,7 +24,7 @@
                 <img class="col-sm-6" id="image"  src="{{asset('storage/images/'. $news->image)}}">
             </div>
 
-            <button type="submit" class="btn btn-primary">Create News</button>
+            <button type="submit" class="btn btn-primary">Update News</button>
         </form>
 
         <div class="m-4">

@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Dictionaries\EmailSubjectsDictionary;
 use App\RejectedMaterialLog;
+use App\RejectedNewsLog;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -14,13 +15,13 @@ class NewsRejectedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var RejectedMaterialLog
+     * @var RejectedNewsLog
      */
-    private $rejectedMaterialLog;
+    private $rejectedNewsLog;
 
-    public function __construct(RejectedMaterialLog $rejectedMaterialLog)
+    public function __construct(RejectedNewsLog $rejectedNewsLog)
     {
-        $this->rejectedMaterialLog = $rejectedMaterialLog;
+        $this->rejectedNewsLog = $rejectedNewsLog;
     }
 
     /**
@@ -33,9 +34,9 @@ class NewsRejectedEvent
         return new PrivateChannel('channel-name');
     }
 
-    public function getRejectedMaterialLog(): RejectedMaterialLog
+    public function getRejectedNewsLog(): RejectedNewsLog
     {
-        return $this->rejectedMaterialLog;
+        return $this->rejectedNewsLog;
     }
 
     public function getEmailSubject(): string
