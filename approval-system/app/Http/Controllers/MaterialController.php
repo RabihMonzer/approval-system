@@ -24,7 +24,7 @@ class MaterialController extends Controller
     {
         $user = auth()->user();
 
-        return view('materials.index', ['materials' => $user->getMaterials($request->get('status'))]);
+        return view('materials.index', ['materials' => $user->getNewsByStatus($request->get('status'))]);
     }
 
     public function create()

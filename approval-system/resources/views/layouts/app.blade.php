@@ -31,9 +31,9 @@
         <div class="list-group list-group-flush">
             <a href="{{ route('materials.index')  }}"
                class="list-group-item list-group-item-action bg-light">Dashboard</a>
-            <a href="{{  route('materials.create') }}" class="list-group-item list-group-item-action bg-light">Create Material</a>
-            <a href="{{ route('rejected-materials-log.index') }}" class="list-group-item list-group-item-action bg-light">Rejected Material</a>
-            <a href="{{ route('materials.index', ['status' => \App\Dictionaries\MaterialStatusDictionary::PENDING_APPROVAL]) }}" class="list-group-item list-group-item-action bg-light">Pending Approval Materials</a>
+            <a href="{{ route('materials.create') }}" class="list-group-item list-group-item-action bg-light">Create News</a>
+            <a href="{{ route('rejected-materials-log.index') }}" class="list-group-item list-group-item-action bg-light">Rejected News</a>
+            <a href="{{ route('materials.index', ['status' => \App\Dictionaries\MaterialStatusDictionary::PENDING_APPROVAL]) }}" class="list-group-item list-group-item-action bg-light">Pending Approval News</a>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->

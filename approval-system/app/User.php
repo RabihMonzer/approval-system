@@ -50,26 +50,26 @@ class User extends Authenticatable
         return $this->hasMany(Material::class);
     }
 
+    public function news()
+    {
+        return $this->hasMany(News::class);
+    }
+
     public function rejectedMaterialLogs()
     {
         return $this->hasMany(RejectedMaterialLog::class);
     }
 
-    public function getMaterials(?string $status)
+    public function getNewsByStatus(?string $status)
     {
         if ($this->isManager()) {
-            return is_null($status) ? Material::orderByDesc('created_at')->get()
-                : Material::where('status', '=', $status)->orderByDesc('created_at')->get();
+            return is_null($status) ? News::orderByDesc('created_at')->get()
+                : News::where('status', '=', $status)->orderByDesc('created_at')->get();
         }
 
         return null === $status ?
-            $this->materials()->orderByDesc('created_at')->get()
-            : $this->materials()->where('status', '=', $status)->orderByDesc('created_at')->get();
-    }
-
-    private function filterMaterialsByStatus(Collection $materials, ?string $status)
-    {
-
+            $this->news()->orderByDesc('created_at')->get()
+            : $this->news()->where('status', '=', $status)->orderByDesc('created_at')->get();
     }
 
     public function getRejectedMaterialsLog()

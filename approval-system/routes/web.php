@@ -27,6 +27,17 @@ Route::delete('/materials/decline/{material}', 'MaterialController@decline')->na
 Route::put('/materials/{material}', 'MaterialController@update')->name('materials.update');
 Route::delete('/materials/{material}', 'MaterialController@destroy')->name('materials.destroy');
 
+Route::get('/news', 'NewsController@index')->name('news.index');
+Route::get('/news/create', 'NewsController@create')->name('news.create');
+Route::get('/news/{news}', 'NewsController@show')->name('news.show');
+Route::get('/news/{news}/edit', 'NewsController@edit')->name('news.edit');
+Route::post('/news', 'NewsController@store')->name('news.store');
+Route::put('/news/approve/{news}', 'NewsController@approve')->name('news.approve');
+Route::delete('/news/decline/{news}', 'NewsController@decline')->name('news.decline');
+Route::put('/news/{news}', 'NewsController@update')->name('news.update');
+Route::delete('/news/{news}', 'NewsController@destroy')->name('news.destroy');
+
+
 // Routes for Rejected Material Logs
 Route::get('/rejected-materials-log', 'RejectedMaterialLogController@index')->name('rejected-materials-log.index');
 

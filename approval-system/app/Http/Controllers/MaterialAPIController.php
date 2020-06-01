@@ -28,7 +28,7 @@ class MaterialAPIController extends Controller
 
     public function index(Request $request)
     {
-        $materials = auth()->user()->getMaterials($request->get('status'));
+        $materials = auth()->user()->getNewsByStatus($request->get('status'));
 
         return new ResponsePaginationData([
             'collection' => MaterialDTOCollection::fromCollection($materials),

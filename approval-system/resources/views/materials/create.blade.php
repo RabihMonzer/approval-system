@@ -1,13 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2 class="font-weight-bold">Create New Material</h2>
+    <h2 class="font-weight-bold">Create News</h2>
     <hr>
-    @if(empty($availableMaterialTypes))
-        <h4>There are no material types, please go to <a href="{{ route('material-types.create') }}" class="href">this
-                link</a> and create a material type before</h4>
-    @else
-
         <div class="w-75 text-left p-4">
             <form method="POST" action="{{ route('materials.store') }}">
                 @csrf
@@ -17,23 +12,18 @@
                 </div>
 
                 <div class="form-group">
-
-                    <label for="materialTypes">Material Type</label>
-                    <input name="materialType" class="form-control" required type="text" list="materialTypes"
-                           placeholder="Choose / Create a Material Type"/>
-                    <datalist id="materialTypes">
-                        @foreach($availableMaterialTypes as $availableMaterialType)
-                            <option>{{ $availableMaterialType->type }}</option>
-                        @endforeach
-                    </datalist>
+                    <label for="description">Description</label>
+                    <textarea name="description" required class="form-control" id="description" rows="3"
+                              placeholder="Write a description here"></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="content">Content</label>
-                    <textarea name="content" required class="form-control" id="content" rows="3"
-                              placeholder="Write all what you need to publish!"></textarea>
+                    <label for="imageInput">File input</label>
+                    <input data-preview="#preview" name="input_img" type="file" id="imageInput">
+                    <img class="col-sm-6" id="preview"  src="">
                 </div>
-                <button type="submit" class="btn btn-primary">Create Material</button>
+
+                <button type="submit" class="btn btn-primary">Create News</button>
             </form>
 
             <div class="m-4">
@@ -45,7 +35,6 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif
             </div>
         </div>
     @endif
