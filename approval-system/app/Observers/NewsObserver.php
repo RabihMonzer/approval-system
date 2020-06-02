@@ -11,13 +11,18 @@ class NewsObserver
 {
     public function creating(News $news)
     {
-        $news->status = auth()->user()->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL;
+        $this->setNewsStatusAccordingToLoggedInUser($news);
         $news->created_by = auth()->user()->id;
     }
 
     public function updating(News $news)
     {
-        $news->status = auth()->user()->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL;
+        $this->setNewsStatusAccordingToLoggedInUser($news);
         $news->updated_by = auth()->user()->id;
+    }
+
+    private function setNewsStatusAccordingToLoggedInUser(News $news): void
+    {
+        $news->status = auth()->user()->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL;
     }
 }
