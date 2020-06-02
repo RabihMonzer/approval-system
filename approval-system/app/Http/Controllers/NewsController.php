@@ -11,14 +11,10 @@ use App\Http\Requests\StoreNewsRequest;
 use App\Http\Requests\UpdateNewsRequest;
 use App\News;
 use App\RejectedNewsLog;
-use App\Validators\UserRoleValidatorTrait;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class NewsController extends Controller
 {
-    use UserRoleValidatorTrait;
-
     public function __construct()
     {
         $this->middleware('auth');
@@ -34,8 +30,6 @@ class NewsController extends Controller
 
     public function create()
     {
-        $this->abortUnlessUserHasPermission();
-
         return view('news.create');
     }
 
@@ -74,8 +68,6 @@ class NewsController extends Controller
 
     public function approve(Request $request, News $news)
     {
-        $this->abortUnlessUserIsManager();
-
         $news->approve();
 
         event(new NewsApprovedEvent($news));
@@ -86,8 +78,6 @@ class NewsController extends Controller
 
     public function reject(Request $request, News $news)
     {
-        $this->abortUnlessUserIsManager();
-
         $rejectedNewsLog = RejectedNewsLog::createRejectedNewsLog($news);
 
         $news->delete();

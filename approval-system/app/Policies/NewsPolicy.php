@@ -49,7 +49,7 @@ class NewsPolicy
      */
     public function create(User $user)
     {
-        in_array($user->role->name, [RoleDictionary::ROLE_MODERATOR]);
+        return in_array($user->role->name, [RoleDictionary::ROLE_MODERATOR]);
     }
 
     /**
