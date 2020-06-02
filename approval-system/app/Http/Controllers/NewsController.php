@@ -70,8 +70,6 @@ class NewsController extends Controller
     {
         $news->approve();
 
-        event(new NewsApprovedEvent($news));
-
         return redirect()->route('news.show', $news->id)
             ->with('success', UserMessagesDictionary::NEWS_APPROVED);
     }

@@ -11,6 +11,10 @@ class News extends Model
 {
     protected $guarded = [];
 
+    protected $observables = [
+        'approved',
+    ];
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -31,6 +35,8 @@ class News extends Model
     {
         $this->status = NewsStatusDictionary::APPROVED;
         $this->save();
+
+        $this->fireModelEvent('approved', false);
     }
 
     public static function createNewsByRequest(Request $request)
