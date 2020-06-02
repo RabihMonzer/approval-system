@@ -7,6 +7,8 @@ namespace App\Http\Controllers;
 use App\Dictionaries\UserMessagesDictionary;
 use App\Events\NewsApprovedEvent;
 use App\Events\NewsRejectedEvent;
+use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\News;
 use App\RejectedNewsLog;
 use App\Validators\UserRoleValidatorTrait;
@@ -20,6 +22,7 @@ class NewsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->authorizeResource(News::class, 'news');
     }
 
     public function index(Request $request)
@@ -36,10 +39,8 @@ class NewsController extends Controller
         return view('news.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request)
     {
-        $this->validateFormRequest($request);
-
         News::createNewsByRequest($request);
 
         return redirect()->route('news.create')
@@ -48,23 +49,16 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        $this->abortIfUserIsNotOwnerOfNewsAndNotManager($news);
-
         return view('news.show', compact('news'));
     }
 
     public function edit(News $news)
     {
-        $this->abortIfUserIsNotOwnerOfNewsAndNotManager($news);
-
         return view('news.edit', compact('news'));
     }
 
-    public function update(Request $request, News $news)
+    public function update(UpdateNewsRequest $request, News $news)
     {
-        $this->abortIfUserIsNotOwnerOfNewsAndNotManager($news);
-        $this->validateFormRequest($request);
-
         $news->updateNewsByRequest($request);
 
         return redirect()->route('news.show', $news->id)
@@ -73,8 +67,6 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
-        $this->abortIfUserIsNotOwnerOfNewsAndNotManager($news);
-
         $news->delete();
 
         return redirect()->route('news.index')->with('success', UserMessagesDictionary::NEWS_DELETED);
@@ -104,22 +96,5 @@ class NewsController extends Controller
 
         return redirect()->route('news.index')
             ->with('success', UserMessagesDictionary:: NEWS_REJECTED);
-    }
-
-    private function abortIfUserIsNotOwnerOfNewsAndNotManager(News $news): void
-    {
-        $currentLoggedInUser = auth()->user();
-
-        if (!$currentLoggedInUser->isManager() && $news->createdBy->isNot($currentLoggedInUser)) {
-            abort(Response::HTTP_FORBIDDEN);
-        }
-    }
-
-    private function validateFormRequest(Request $request): void
-    {
-        $this->validate($request, [
-            'title' => ['required', 'max:255'],
-            'image' => ['image']
-        ]);
     }
 }
