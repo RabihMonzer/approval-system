@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Dictionaries\NewsStatusDictionary;
+use App\Observers\NewsObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,12 @@ class News extends Model
         return $this->belongsTo(User::class);
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        News::observe(NewsObserver::class);
+    }
+
     public function approve(): void
     {
         $this->status = NewsStatusDictionary::APPROVED;
@@ -31,14 +38,10 @@ class News extends Model
         if ($request->hasFile('image'))
             $filename = self::storeNewsImage($request);
 
-        $user = auth()->user();
-
         return News::create([
-            'created_by' => $user->id,
             'title' => $request->get('title'),
             'image' => $filename ?? 'default.png',
             'description' => $request->get('description'),
-            'status' => $user->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL
         ]);
     }
 
@@ -47,12 +50,8 @@ class News extends Model
         if ($request->hasFile('image'))
             $filename = self::storeNewsImage($request);
 
-        $user = auth()->user();
-
-        $this->updated_by = $user->id;
         $this->title = $request->get('title');
         $this->description = $request->get('description');
-        $this->status = $user->isManager() ? NewsStatusDictionary::APPROVED : NewsStatusDictionary::PENDING_APPROVAL;
         $this->image = $filename ?? $this->image;
 
         $this->save();
