@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasMany(News::class, 'created_by');
     }
 
+    public function submittedData()
+    {
+        return $this->hasMany(Data::class, 'created_by');
+    }
+
     public function rejectedNewsLogs()
     {
         return $this->hasMany(RejectedNewsLog::class, 'owner_id');

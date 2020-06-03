@@ -42,4 +42,8 @@ Route::prefix('api')->group(function () {
     Route::delete('/materials/decline/{material}', 'MaterialAPIController@decline')->name('material-api.decline');
     Route::put('/materials/approve/{material}', 'MaterialAPIController@approve')->name('material-api.approve');
 
+    Route::post('/approvals', 'DataApiController@store');
+    Route::put('/approvals/approve/{data}', 'DataApiController@approve');
+    Route::put('/approvals/reject/{data}', 'DataApiController@reject');
+
 });

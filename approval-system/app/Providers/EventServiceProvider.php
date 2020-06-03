@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\DataApprovedEvent;
+use App\Listeners\DataManagerListener;
 use App\Subscribers\SendEmailNotificationSubscriber;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        DataApprovedEvent::class => [
+            DataManagerListener::class
         ],
     ];
 
