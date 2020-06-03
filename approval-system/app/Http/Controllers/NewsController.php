@@ -22,7 +22,6 @@ class NewsController extends Controller
 
     public function index(Request $request)
     {
-        return csrf_token();
         $user = auth()->user();
 
         return view('news.index', ['news' => $user->getNewsByStatus($request->get('status'))]);

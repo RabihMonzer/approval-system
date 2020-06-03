@@ -18,6 +18,7 @@ class DataManagerService
     public function approveData(Data $data): void
     {
         $data->approve();
+
         event(new DataApprovedEvent($data));
         $data->save();
     }
