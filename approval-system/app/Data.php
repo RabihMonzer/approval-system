@@ -24,6 +24,11 @@ class Data extends Model
         $this->belongsTo(User::class);
     }
 
+    public function callback()
+    {
+        return $this->hasOne(Callback::class, 'data_id');
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -46,6 +51,17 @@ class Data extends Model
             'data' => Json::encode($request->get('data')),
             'table_name' => $request->get('table_name'),
             'transaction_type' => $request->get('transaction_type'),
+            'dispatch_transaction_completed_event' => $request->get('dispatch_transaction_completed_event') ?? false,
         ]);
+    }
+
+    public function shouldDispatchTransactionCompletedEvent(): bool
+    {
+        return (bool) $this->dispatch_transaction_completed_event;
+    }
+
+    public static function testing()
+    {
+        dd('Passed');
     }
 }

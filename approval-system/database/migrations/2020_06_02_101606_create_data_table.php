@@ -20,6 +20,7 @@ class CreateDataTable extends Migration
             $table->longText('data')->nullable(false);
             $table->string('table_name');
             $table->string('transaction_type')->nullable(false);
+            $table->boolean('dispatch_transaction_completed_event')->nullable(false)->default(false);
             $table->bigInteger('created_by')->unsigned()->nullable(false);
             $table->bigInteger('updated_by')->unsigned()->nullable(true);
             $table->timestamps();

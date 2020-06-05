@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Events\DataApprovedEvent;
+use App\Events\DataTransactionCompletedEvent;
+use App\Listeners\CallbacksManagerListener;
 use App\Listeners\DataManagerListener;
 use App\Subscribers\SendEmailNotificationSubscriber;
 use Illuminate\Auth\Events\Registered;
@@ -22,8 +24,12 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         DataApprovedEvent::class => [
-            DataManagerListener::class
+            DataManagerListener::class,
+            CallbacksManagerListener::class,
         ],
+        DataTransactionCompletedEvent::class => [
+            // Add listeners upon your need
+        ]
     ];
 
     protected $subscribe = [

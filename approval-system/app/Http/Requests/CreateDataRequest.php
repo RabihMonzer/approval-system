@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Dictionaries\TransactionTypeDictionary;
+use App\Rules\ValidCallbackParametersRule;
 use App\Rules\ValidColumnNamesRule;
 use App\Rules\ValidTableNameRule;
 use App\Rules\ValidTransactionType;
@@ -11,6 +13,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class CreateDataRequest extends FormRequest
@@ -34,9 +37,20 @@ class CreateDataRequest extends FormRequest
     {
         return [
             'table_name' => ['required', 'string', new ValidTableNameRule()],
+
             'data' => ['required', 'array', 'min:1', new ValidColumnNamesRule($this->get('table_name'))],
             'data.created_by' => ['exists:users,id'],
-            'transaction_type' => ['required', 'string', new ValidTransactionType($this->get('data'), $this->get('table_name'))],
+
+            'transaction_type' => [
+                'required',
+                'string',
+                Rule::in(TransactionTypeDictionary::getValidTransactionTypes()),
+                new ValidTransactionType($this->get('data'), $this->get('table_name'))
+            ],
+
+            'dispatch_transaction_completed_event' => ['boolean'],
+
+            'callback_function' => ['array', new ValidCallbackParametersRule()],
         ];
     }
 

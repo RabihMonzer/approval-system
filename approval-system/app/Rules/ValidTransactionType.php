@@ -35,10 +35,6 @@ class ValidTransactionType implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!in_array($value, TransactionTypeDictionary::getValidTransactionTypes())) {
-            return false;
-        }
-
         if (TransactionTypeDictionary::TRANSACTION_INSERT === $value) {
             return true;
         }

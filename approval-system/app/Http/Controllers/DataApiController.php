@@ -8,6 +8,7 @@ use App\Data;
 use App\Dictionaries\DataStatusDictionary;
 use App\DTO\Data\DataDTO;
 use App\DTO\ResponseData;
+use App\Events\DataTransactionCompletedEvent;
 use App\Http\Requests\CreateDataRequest;
 use App\Services\DataManagerService;
 use Illuminate\Http\JsonResponse;
@@ -43,6 +44,9 @@ class DataApiController extends Controller
         abort_if(DataStatusDictionary::PENDING_APPROVAL !== $data->status, Response::HTTP_BAD_REQUEST);
 
         $this->dataManagerService->approveData($data);
+
+        if ($data->shouldDispatchTransactionCompletedEvent())
+            event(new DataTransactionCompletedEvent(json_decode($data->data, true)));
 
         return new JsonResponse(null, Response::HTTP_OK);
     }
